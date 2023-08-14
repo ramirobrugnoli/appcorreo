@@ -1,0 +1,8 @@
+{
+  "add-to-cart-button": {
+    "component": "Wrapper"
+  },
+  "add-guarantee": {
+    "component": "ConfirmGuarantee"
+  }
+}

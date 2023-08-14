@@ -1,0 +1,8 @@
+mutation AddItemsToCart($orderFormId: ID, $items: [ItemInput]){
+  addToCart(
+    orderFormId: $orderFormId,
+    items: $items
+  ) {
+    id
+  }
+}
