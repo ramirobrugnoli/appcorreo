@@ -1,12 +1,12 @@
-import type { ClientsConfig, ServiceContext, RecorderState, ParamsContext } from '@vtex/api'
-import { LRUCache, method, Service } from '@vtex/api'
-import { Clients } from './clients'
-import { processOrder } from './middlewares/processOrder'
+import type { ClientsConfig, ServiceContext, RecorderState, ParamsContext} from '@vtex/api';
+import { LRUCache, method, Service } from '@vtex/api';
+import { Clients } from './clients';
+import { processOrder } from './middlewares/processOrder';
 /* import { validateOrder } from './middlewares/validateOrder' */
 
 const TIMEOUT_MS = 800
 
-//URL: https://correostaging.vtexcommercestable.com.br/api/add-to-cart-button-guarantee/orderNotification  -- https://servicechanges--correostaging.myvtex.com/0.0/orderNotification/:order
+//URL: https://correostaging.vtexcommercestable.com.br/api/add-to-cart-button-guarantee/orderNotification  -- https://servicechanges--correostaging.myvtex.com/0.0/orderNotification/
 
 const memoryCache = new LRUCache<string, any>({ max: 5000 })
 

@@ -1,20 +1,14 @@
-import { log } from '@vtex/api';
+export async function processOrder(ctx: Context, next: () => Promise<any>) {
 
-export async function processOrder(ctx: any, next: () => Promise<any>) {
   const {
-    state: { order },
     clients: { orderClients: orderClients },
   } = ctx;
 
-  // agregar logica de la orden
-  const requestBody = ctx.request
-  
+  // Acceder al cuerpo de la solicitud
+  const requestBody = await ctx.request;
 
-
-  log('requestbody con log: ', requestBody);
-
-  console.log('req body consonle ', requestBody)
-  console.log('segundo console: ',order,orderClients);
+  console.log('REQ BODY ************************* ', requestBody);
+  console.log('segundo console: ', orderClients);
 
   ctx.response.status = 200;
   ctx.response.body = 'Order processed successfully ?';
