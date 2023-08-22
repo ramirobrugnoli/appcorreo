@@ -1,0 +1,8 @@
+query GetOrderInfo($orderId: String!) {
+  order(orderId: $orderId) {
+    orderId
+    status
+    total
+    items
+  }
+}
