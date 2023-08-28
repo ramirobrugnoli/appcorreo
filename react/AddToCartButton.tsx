@@ -269,6 +269,7 @@ function AddToCartButton(props: Props) {
     if (allSkuVariationsSelected) {
       handleAddToCart()
       console.log('paso por handleAddToCart');
+      console.log(productLink);
       if (hasGuarantee && hasSelectedGuarantee){
         navigate({
          to: `/agregar-proteccion?productId=${productLink.productId}`,

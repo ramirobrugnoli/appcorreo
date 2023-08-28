@@ -36,13 +36,18 @@ const ConfirmGuarantee = () => {
   const [guaranteeSelected, setGuaranteSelected] = useState(24);
   const [guaranteePrice, setGuaranteePrice] = useState(0);
   const [showComponent, setShowComponent] = useState(true);
-/*   const [index, setIndex] = useState (localStorage.getItem('index') || 0) */
-  const [index, setIndex] = useState (10)
+  const [itemsInCart, setItemsInCart] = useState(0);
+
+  const [guaranteeAvailable12, setGuaranteeAvailable12] = useState(9);
+  const [guaranteeAvailable24, setGuaranteeAvailable24] = useState(8);
+
   const { url: checkoutURL } = Utils.useCheckoutURL()
   const { navigate } = useRuntime()
   const { orderForm } = useOrderForm()
 
-  console.log('productId: ', productId, 'orderFormId: ', orderFormId);
+  const guaranteeNumbers12 = [9, 20, 22, 23]
+
+  const guaranteeNumbers24 = [8, 21, 24, 25]
 
   useEffect(() => {
     const urlObj = new URL(window.location.href);
@@ -58,34 +63,84 @@ const ConfirmGuarantee = () => {
     if (price !== 0) {
       setGuaranteePrice(price * 0.2);
     }
-    console.log('price:', price);
   }, [price]);
 
   useEffect(() => {
     setOrderFormId(orderForm.id);
 
+    if (orderForm) {
+      console.log(orderForm);
+    }
+
     if (orderForm && productId) {
       orderForm.items.map((item: any) => {
-        item.id === productId ? setPrice(item.price) : null;
+        item.productId === productId ? setPrice(item.price) : null;
       })
     }
 
   }, [orderForm, productId]);
 
+  useEffect(() => {
+    console.log('Entrando a useEffect');
+
+    if (orderForm) {
+      setItemsInCart(orderForm.items.length);
+      console.log('Cantidad items carrito:', itemsInCart);
+
+      orderForm.items.forEach((item: any) => {
+        console.log('NOMBRE: ', item.skuName, ' //  ID: ', item.id);
+        
+        if (guaranteeSelected === 12 && item.id == guaranteeAvailable12) {
+          const updatedAvailable12 = guaranteeNumbers12.find((number: any) => number !== guaranteeAvailable12);
+          if (updatedAvailable12 !== undefined) {
+            setGuaranteeAvailable12(updatedAvailable12);
+          }
+        } else if (guaranteeSelected === 24 && item.id == guaranteeAvailable24) {
+          console.log('Pasó el segundo if');
+          const updatedAvailable24 = guaranteeNumbers24.find((number: any) => number !== guaranteeAvailable24);
+          if (updatedAvailable24 !== undefined) {
+            setGuaranteeAvailable24(updatedAvailable24);
+          }
+        }
+      });
+    }
+  }, [orderForm, guaranteeSelected]);
+
+  useEffect(() => {
+    if (orderForm) {
+      if (guaranteeSelected === 12) {
+        for (const item of orderForm.items) {
+          if (item.productId === guaranteeAvailable12) {
+            const newAvailableNumbers = guaranteeNumbers12.filter(number => number !== guaranteeAvailable12);
+            if (newAvailableNumbers.length > 0) {
+              const newAvailableNumber = newAvailableNumbers[0];
+              setGuaranteeAvailable12(newAvailableNumber);
+            }
+          }
+        }
+      } else {
+        for (const item of orderForm.items) {
+          if (item.productId === guaranteeAvailable24) {
+            const newAvailableNumbers = guaranteeNumbers24.filter(number => number !== guaranteeAvailable24);
+            if (newAvailableNumbers.length > 0) {
+              const newAvailableNumber = newAvailableNumbers[0];
+              setGuaranteeAvailable24(newAvailableNumber);
+            }
+          }
+        }
+      }
+    }
+  }, [orderForm, guaranteeSelected, guaranteeAvailable12, guaranteeAvailable24]);
 
 
 
   const handleGuarantee = async () => {
     if (hasSelectedGuarantee) {
+
       const currentGuaranteePrice = guaranteePrice;
-      console.log('current guarantee enviada a API:', currentGuaranteePrice);
-      console.log('index enviado a funcion:', index);
-      await agregarAlCarrito(8, currentGuaranteePrice, orderFormId, Number(index));
-      const newIndex = Number(index) + 1;
-      setIndex(newIndex);
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('index', String(newIndex));
-      }
+
+      await agregarAlCarrito(guaranteeSelected === 12 ? guaranteeAvailable12 : guaranteeAvailable24, currentGuaranteePrice, orderFormId, 1);
+
       navigate({ to: checkoutURL });
       setShowComponent(false);
       setTimeout(() => {
@@ -110,7 +165,6 @@ const ConfirmGuarantee = () => {
 
   const handleClickGuarantee = async (number: number) => {
     if (number === 12) {
-      console.log('price:', price);
       setGuaranteePrice(price * 0.1);
     } else if (number === 24) {
       setGuaranteePrice(price * 0.2);
@@ -124,7 +178,7 @@ const ConfirmGuarantee = () => {
     return (
       <div className={handles.modalGuaranteeOverlay}>
         <div className={handles.modalGuarantee}>
-          <h2>Añadir una protección service onLine</h2>
+          <h2>Añadir una protección III</h2>
           <div className={handles.modalGuaranteeContainer}>
             <div className={handles.guaranteeOptionsContainer}>
               <div className={guaranteeSelected === 12 ? handles.guaranteeOptionSelected : handles.guaranteeOption} onClick={() => handleClickGuarantee(12)}>

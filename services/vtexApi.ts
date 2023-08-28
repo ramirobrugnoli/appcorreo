@@ -5,6 +5,8 @@ async function agregarAlCarrito(id: Number, precio: Number, orderFormId: String,
     orderItems: [{ quantity: 1, seller: '1113', id: id, index: index, price: precio }]
   };
 
+  console.log('ID QUE LLEGO A ADD TO CART:', id);
+
   const response = await fetch(url, {
     method: "POST",
     headers: {
@@ -19,6 +21,7 @@ async function agregarAlCarrito(id: Number, precio: Number, orderFormId: String,
   const body = await response.text();
 
   console.log(body);
+  
   console.log('INDEX QUE LLEGA A VTEXAPI ACTUALIZADO', index);
   return;
 }
