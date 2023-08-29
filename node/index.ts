@@ -2,6 +2,7 @@ import type { ClientsConfig, ServiceContext, RecorderState, ParamsContext} from 
 import { LRUCache, method, Service } from '@vtex/api';
 import { Clients } from './clients';
 import { processOrder } from './middlewares/processOrder';
+import { getTokenHandler } from './middlewares/getToken'
 /* import { validateOrder } from './middlewares/validateOrder' */
 
 const TIMEOUT_MS = 800
@@ -26,6 +27,9 @@ const clients: ClientsConfig<Clients> = {
     orderClients: {
       memoryCache,
     },
+    andromeda: {
+      memoryCache,
+    }
   },
 }
 
@@ -41,17 +45,15 @@ declare global {
 
 // Export a service that defines route handlers and client options.
 export default new Service<Clients, State, ParamsContext>({
-
   clients,
-
   routes: {
-
     orderNotification: method({
-
       POST: [processOrder],
-
     }),
-
+    token: method ({
+      POST: [getTokenHandler]
+    })
   },
-
 });
+
+

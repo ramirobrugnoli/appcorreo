@@ -9,6 +9,10 @@
     "orderNotification": {
       "path": "/0.0/orderNotification",
       "public": true
+    },
+    "token" : {
+      "path": "/0.0/getToken",
+      "public": true
     }
   }
 }

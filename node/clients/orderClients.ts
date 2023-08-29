@@ -1,4 +1,4 @@
-import { InstanceOptions, IOContext, IOClient } from '@vtex/api';
+import { InstanceOptions, IOContext, IOClient} from '@vtex/api';
 
 export default class OrderClients extends IOClient {
   static app: any;
@@ -12,3 +12,4 @@ export default class OrderClients extends IOClient {
     });
   }
 }
+

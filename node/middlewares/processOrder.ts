@@ -1,13 +1,13 @@
 import { json } from 'co-body';
 import fetch from 'node-fetch';
 
-export async function processOrder(ctx: any, next: () => Promise<any>) {
+export async function processOrder(ctx: Context, next: () => Promise<any>) {
   try {
     const body = await json(ctx.req);
     const orderId = body.OrderId;
-    
+
     let tokenBlister: any;
-    
+
     try {
       tokenBlister = await getToken();
       console.log('Token Blister:', tokenBlister);
@@ -22,8 +22,11 @@ export async function processOrder(ctx: any, next: () => Promise<any>) {
 
     let orderDetails:any;
 
+
     try {
-      orderDetails = await obtenerDetallesPedido(orderId);
+      orderDetails = await ctx.clients.getOrders.getOrders(orderId);
+      let orderitems = orderDetails.items;
+      console.log('Items vendidos:', orderitems);
       console.log('Obtener detalles pedido nuevo: ', orderDetails);
     } catch (detallesError) {
       console.error('Error obteniendo detalles del pedido:', detallesError);
@@ -49,27 +52,6 @@ async function getToken() {
     headers: {
       "Accept": "application/json",
       "Content-Type": "application/x-www-form-urlencoded",
-    },
-  };
-
-  const response = await fetch(url, options);
-  if (!response.ok) {
-    throw new Error(`HTTP error! Status: ${response.status}`);
-  }
-
-  const json = await response.json();
-  return json;
-}
-
-async function obtenerDetallesPedido(orderId: string) {
-  const url = `http://servicechanges--correostaging.myvtex.com/api/oms/pvt/orders/${orderId}`;
-  const options = {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Vtex-Use-Https': 'true',
-      'X-VTEX-API-AppKey': 'vtexappkey-correostaging-UZRTJY',
-      'X-VTEX-API-AppToken': 'FTHNTKOGDEPOQWQKACRPYRLOJKNPUHFLOWTOELGYEENUESMYJWDNSKJQHOEMYGVKLIKLMPCATLJITZNYRZJTURNKJVEORGUMEORVZPNWGWYISQHWJAESJQZUHFTMLZRL',
     },
   };
 

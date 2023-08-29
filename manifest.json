@@ -26,6 +26,24 @@
   "registries": [
     "smartcheckout"
   ],
-  "policies": [],
+  "policies": [
+    {
+      "name": "AcessaTodosPedidos"
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "correostaging.vtexcommercestable.com.br",
+        "path": "/api/oms/pvt/orders/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "api-marketplace.staging.andromedalatam.com",
+        "path": "/api/v1/login"
+      }
+    }
+  ],
   "$schema": "https://raw.githubusercontent.com/vtex/node-vtex-api/master/gen/manifest.schema"
 }
