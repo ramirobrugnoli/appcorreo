@@ -16,58 +16,51 @@ export async function processOrder(ctx: Context, next: () => Promise<any>) {
     }
 
     console.log('Order ID:', orderId);
+    const orderNumber = orderId.split("-")[1];
 
     ctx.response.status = 200;
     ctx.response.body = 'Order processed successfully';
 
-
     let orderDetails: any;
 
+    if (orderNumber === '01') {
+      try {
+        let orderInfo: { [key: number]: any } = {};
+        let orderNumber = 1;
 
-    try {
-      let orderInfo: { [key: number]: any } = {};
-      let orderNumber = 1;
-
-      while (true) {
-        try {
-          console.log('ORDER NUMBER WHILE', orderNumber);
-          orderDetails = await ctx.clients.getOrders.getOrders(
-            `${orderId.split('-')[0]}-0${orderNumber}`
-          );
-
-          console.log('ORDERS ID TESTING', `${orderId.split('-')[0]}-0${orderNumber}`);
-
-/*           let orderitems = orderDetails.items;
-          let orderOwner = orderDetails.clientProfileData;
-
-          console.log('Items vendidos:', orderitems);
-          console.log('Order profile info:', orderOwner);
-          console.log('Obtener detalles pedido nuevo:', orderDetails); */
-
-          orderInfo[orderNumber] = orderDetails.items;
-          orderNumber++;
-        } catch (detallesError) {
-          if (detallesError.statusCode === 404) {
-            break;
-          } else {
-            console.error('Error obteniendo detalles del pedido:'/* , detallesError */);
-            break;
+        while (true) {
+          try {
+            console.log('ORDER NUMBER WHILE', orderNumber);
+            orderDetails = await ctx.clients.getOrders.getOrders(
+              `${orderId.split('-')[0]}-0${orderNumber}`
+            );
+            console.log('ORDERS ID TESTING', `${orderId.split('-')[0]}-0${orderNumber}`);
+                       let orderitems = orderDetails.items;
+                      let orderOwner = orderDetails.clientProfileData;
+                      console.log('Items vendidos:', orderitems);
+                      console.log('Order profile info:', orderOwner);
+                      console.log('Obtener detalles pedido nuevo:', orderDetails); 
+            orderInfo[orderNumber] = orderDetails.items;
+            orderNumber++;
+          } catch (detallesError) {
+            if (detallesError.statusCode === 404) {
+              break;
+            } else {
+              console.error('Error obteniendo detalles del pedido:'/* , detallesError */);
+              break;
+            }
           }
         }
+        console.log('order info completo:', orderInfo);
+      } catch (detallesError) {
+        console.error('Error obteniendo detalles del pedido:'/* , detallesError */);
       }
-      
-      console.log('order info completo:', orderInfo);
-      
-      
-
-    } catch (detallesError) {
-      console.error('Error obteniendo detalles del pedido:'/* , detallesError */);
+    } else {
+      console.log('orden duplicada.');
     }
   } catch (error) {
     console.error('Error general en el proceso:', error);
   }
-
-
 
   await next();
 }
