@@ -33,7 +33,7 @@ const ConfirmGuarantee = () => {
   const [productId, setProductId] = useState('');
   const [hasSelectedGuarantee, setHasSelectedGuarantee] = useState(true)
   const [orderFormId, setOrderFormId] = useState('');
-  const [guaranteeSelected, setGuaranteSelected] = useState(24);
+  const [guaranteeSelected, setGuaranteSelected] = useState(12);
   const [guaranteePrice, setGuaranteePrice] = useState(0);
   const [showComponent, setShowComponent] = useState(true);
   const [itemsInCart, setItemsInCart] = useState(0);
@@ -187,38 +187,41 @@ const ConfirmGuarantee = () => {
     setHasSelectedGuarantee(true);
   };
 
+  console.log('guarantee Price:', guaranteePrice, "price:", price);
 
   if (guaranteePrice && showComponent) {
     return (
       <div className={handles.modalGuaranteeOverlay}>
         <div className={handles.modalGuarantee}>
-          <h2>Añadir una protección A.T.6</h2>
+          <h2>Añadir una garantía 9</h2>
           <div className={handles.modalGuaranteeContainer}>
             <div className={handles.guaranteeOptionsContainer}>
               <div className={guaranteeSelected === 12 ? handles.guaranteeOptionSelected : handles.guaranteeOption} onClick={() => handleClickGuarantee(12)}>
                 <h4>Garantía extendida 12 meses</h4>
                 <p className={handles.guaranteeText}><b>Durante un año</b> protegés tu producto</p>
-                <p className={handles.guaranteePrice}>${((price / 100) * 1.1).toLocaleString()}</p>
+                <p className={handles.guaranteePrice}>${((price / 100) * 0.1).toLocaleString()}</p>
               </div>
               <div className={guaranteeSelected === 24 ? handles.guaranteeOptionSelected : handles.guaranteeOption} onClick={() => handleClickGuarantee(24)}>
                 <h4>Garantía extendida 24 meses</h4>
                 <p className={handles.guaranteeText}><b>Durante dos años</b> protegés tu producto</p>
-                <p className={handles.guaranteePrice} >${((price / 100) * 1.2).toLocaleString()}</p>
+                <p className={handles.guaranteePrice} >${((price / 100) * 0.2).toLocaleString()}</p>
               </div>
             </div>
             <div className={handles.textContainer}>
               <span><b>Cuidá tu producto por más tiempo</b>, después de finalizar la garantía de fábrica.</span>
+              <p>Que cubre la garantía extendida?</p>
               <ul>
                 <li><b>Cubre todo tipo de fallas</b> que no sean por mal uso o accidentes.</li>
                 <li><b>Sin limite de reparaciones! </b>con repuestos originales y servicio técnico oficial. </li>
                 <li><b>Devolucion del 100% del valor actualizado</b>, si no se puede reparar.</li>
+                <li>Si no podemos reparar el producto te indemnizamos <b>con el 80%</b> del valor de reposición del bien.</li>
               </ul>
             </div>
           </div>
           <div className={handles.modalFooter}>
 
             <button className={handles.addToCartWithoutGuarantee} onClick={handleWithoutGuarantee}> Continuar sin Garantía </button>
-            <button className={handles.addToCartWithGuarantee} onClick={handleGuarantee}> Añadir Protección </button>
+            <button className={handles.addToCartWithGuarantee} onClick={handleGuarantee}> Añadir Garantía </button>
           </div>
         </div>
       </div>

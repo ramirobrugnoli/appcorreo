@@ -23,6 +23,7 @@ interface ProductLink {
 
 interface Props {
   isOneClickBuy: boolean
+  isOneClickBuy2: boolean
   available: boolean
   disabled: boolean
   multipleAvailableSKUs: boolean
@@ -109,6 +110,7 @@ function AddToCartButton(props: Props) {
   const {
     text,
     isOneClickBuy,
+    isOneClickBuy2,
     available,
     disabled,
     skuItems,
@@ -227,7 +229,7 @@ function AddToCartButton(props: Props) {
     // @ts-expect-error the event is not typed in pixel-manager
     push(pixelEvent)
 
-    if (isOneClickBuy) {
+    if (isOneClickBuy2) {
       await addItemsPromise
 
       if (
@@ -236,8 +238,8 @@ function AddToCartButton(props: Props) {
       ) { 
         
         //AGREGAR LÓGICA EN DONDE CHEQUEA SI EL PRODUCTO OFRECE O NO GARANTÍA!!!
-        console.log('one click buy en true:', isOneClickBuy);
-        navigate({ to: `/agregar-proteccion?productId=${productLink.productId}&isOneClickBuy=${isOneClickBuy}` })
+        console.log('one click buy en true:', isOneClickBuy2);
+        navigate({ to: `/agregar-proteccion?productId=${productLink.productId}&isOneClickBuy=${isOneClickBuy2}` })
       } else {
         window.location.assign(
           `${rootPath}${customOneClickBuyLink ?? checkoutURL}`
@@ -273,9 +275,9 @@ function AddToCartButton(props: Props) {
       handleAddToCart()
       console.log(productLink);
       if (hasGuarantee && hasSelectedGuarantee){
-        console.log('one click buy en false:', isOneClickBuy);
+        console.log('one click buy en false:', isOneClickBuy2);
         navigate({
-         to: `/agregar-proteccion?productId=${productLink.productId}&isOneClickBuy=${isOneClickBuy}`,
+         to: `/agregar-proteccion?productId=${productLink.productId}&isOneClickBuy=${isOneClickBuy2}`,
        }) 
      } 
     }

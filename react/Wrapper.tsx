@@ -13,6 +13,7 @@ import { AssemblyOptions } from './modules/assemblyOptions'
 
 interface Props {
   isOneClickBuy: boolean
+  isOneClickBuy2: boolean
   available: boolean
   disabled: boolean
   customToastUrl?: string
@@ -86,6 +87,7 @@ function getDefaultSeller(sellers?: ProductTypes.Seller[]) {
 const Wrapper = withToast(function Wrapper(props: Props) {
   const {
     isOneClickBuy,
+    isOneClickBuy2,
     available,
     disabled,
     customToastUrl,
@@ -166,7 +168,7 @@ const Wrapper = withToast(function Wrapper(props: Props) {
   }, [product]);
 
   useEffect(() => {
-    console.log('is One click buy en wrapper:', isOneClickBuy);
+    console.log('is One click buy en wrapper:', isOneClickBuy, isOneClickBuy2);
   }, []);
 
   return (
@@ -179,6 +181,7 @@ const Wrapper = withToast(function Wrapper(props: Props) {
         showToast={showToast}
         available={isAvailable}
         isOneClickBuy={isOneClickBuy}
+        isOneClickBuy2={isOneClickBuy2}
         customToastUrl={customToastUrl}
         unavailableText={unavailableText}
         customOneClickBuyLink={customOneClickBuyLink}
