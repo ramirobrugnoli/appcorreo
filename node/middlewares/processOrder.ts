@@ -37,9 +37,17 @@ export async function processOrder(ctx: Context, next: () => Promise<any>) {
             console.log('ORDERS ID TESTING', `${orderId.split('-')[0]}-0${orderNumber}`);
                        let orderitems = orderDetails.items;
                       let orderOwner = orderDetails.clientProfileData;
+                      let customData = orderDetails.customData;
+                      if (customData && customData.customApps && customData.customApps.length > 0) {
+                        const fields = customData.customApps[0].fields;
+                        console.log('Fields:', fields);
+                      } else {
+                        console.log('No se encontraron datos personalizados o campos en los datos recibidos.');
+                      }
                       console.log('Items vendidos:', orderitems);
                       console.log('Order profile info:', orderOwner);
-                      console.log('Obtener detalles pedido nuevo:', orderDetails); 
+/*                       console.log('Obtener detalles pedido nuevo:', orderDetails);  */
+                      console.log('Custom Data:', customData);
             orderInfo[orderNumber] = orderDetails.items;
             orderNumber++;
           } catch (detallesError) {

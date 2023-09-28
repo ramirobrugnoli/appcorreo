@@ -37,27 +37,41 @@ const ConfirmGuarantee = () => {
   const [guaranteePrice, setGuaranteePrice] = useState(0);
   const [showComponent, setShowComponent] = useState(true);
   const [itemsInCart, setItemsInCart] = useState(0);
-
-  const [guaranteeAvailable12, setGuaranteeAvailable12] = useState(9);
-  const [guaranteeAvailable24, setGuaranteeAvailable24] = useState(8);
+  const [isOneClickBuy, setIsOneClickbuy] = useState(false)
+  const [guaranteeAvailable12, setGuaranteeAvailable12] = useState(275);
+  const [guaranteeAvailable24, setGuaranteeAvailable24] = useState(278);
 
   const { url: checkoutURL } = Utils.useCheckoutURL()
   const { navigate } = useRuntime()
   const { orderForm } = useOrderForm()
 
-  const guaranteeNumbers12 = [9, 20, 22, 23]
+  const guaranteeNumbers12 = [276, 277]
 
-  const guaranteeNumbers24 = [8, 21, 24, 25]
+  const guaranteeNumbers24 = [279, 280]
 
   useEffect(() => {
     const urlObj = new URL(window.location.href);
     const searchParams = new URLSearchParams(urlObj.search);
-    const id = searchParams.get("productId")!;
-
-    setProductId(id);
+    const id = searchParams.get("productId");
+    const isOneClickBuyString = searchParams.get("isOneClickBuy");
+  
+    if (id) {
+      setProductId(id);
+    }
+  
+    if (isOneClickBuyString) {
+      const isOneClickBuyValue = isOneClickBuyString === 'true'; // Convierte la cadena en un valor booleano
+      setIsOneClickbuy(isOneClickBuyValue);
+    }
+  
     setOrderFormId(orderForm.id);
   }, []);
+  
 
+  useEffect(() => {
+    console.log('is one click buy extraido:', isOneClickBuy);
+  }, [isOneClickBuy])
+  
 
   useEffect(() => {
     if (price !== 0) {
@@ -139,7 +153,7 @@ const ConfirmGuarantee = () => {
 
       const currentGuaranteePrice = guaranteePrice;
 
-      await agregarAlCarrito(guaranteeSelected === 12 ? guaranteeAvailable12 : guaranteeAvailable24, currentGuaranteePrice, orderFormId, 1);
+      await agregarAlCarrito(guaranteeSelected === 12 ? guaranteeAvailable12 : guaranteeAvailable24, currentGuaranteePrice, orderFormId, 1, productId);
 
       navigate({ to: checkoutURL });
       setShowComponent(false);
@@ -178,7 +192,7 @@ const ConfirmGuarantee = () => {
     return (
       <div className={handles.modalGuaranteeOverlay}>
         <div className={handles.modalGuarantee}>
-          <h2>Añadir una protección III</h2>
+          <h2>Añadir una protección A.T.6</h2>
           <div className={handles.modalGuaranteeContainer}>
             <div className={handles.guaranteeOptionsContainer}>
               <div className={guaranteeSelected === 12 ? handles.guaranteeOptionSelected : handles.guaranteeOption} onClick={() => handleClickGuarantee(12)}>

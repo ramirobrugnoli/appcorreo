@@ -166,6 +166,7 @@ function AddToCartButton(props: Props) {
     }
   }, [isFakeLoading, isOneClickBuy])
 
+
   const resolveToastMessage = (success: boolean) => {
     if (!success) return translateMessage(messages.error)
 
@@ -233,8 +234,10 @@ function AddToCartButton(props: Props) {
         major > 0 &&
         (!customOneClickBuyLink || customOneClickBuyLink === checkoutURL)
       ) { 
+        
         //AGREGAR LÓGICA EN DONDE CHEQUEA SI EL PRODUCTO OFRECE O NO GARANTÍA!!!
-        navigate({to: `/agregar-proteccion?productId=${productLink.productId}`})
+        console.log('one click buy en true:', isOneClickBuy);
+        navigate({ to: `/agregar-proteccion?productId=${productLink.productId}&isOneClickBuy=${isOneClickBuy}` })
       } else {
         window.location.assign(
           `${rootPath}${customOneClickBuyLink ?? checkoutURL}`
@@ -268,11 +271,11 @@ function AddToCartButton(props: Props) {
 
     if (allSkuVariationsSelected) {
       handleAddToCart()
-      console.log('paso por handleAddToCart');
       console.log(productLink);
       if (hasGuarantee && hasSelectedGuarantee){
+        console.log('one click buy en false:', isOneClickBuy);
         navigate({
-         to: `/agregar-proteccion?productId=${productLink.productId}`,
+         to: `/agregar-proteccion?productId=${productLink.productId}&isOneClickBuy=${isOneClickBuy}`,
        }) 
      } 
     }

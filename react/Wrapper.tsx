@@ -165,6 +165,10 @@ const Wrapper = withToast(function Wrapper(props: Props) {
     }
   }, [product]);
 
+  useEffect(() => {
+    console.log('is One click buy en wrapper:', isOneClickBuy);
+  }, []);
+
   return (
     <div>
       <AddToCartButton
