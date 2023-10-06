@@ -4,11 +4,13 @@ async function addOrderData(id: Number,orderFormId: String, productId: String, c
     const urlCustomData = `/api/checkout/pub/orderForm/${orderFormId}/customData/${customId}`;  //el guarantee1 se debe recibir como prop, ya q si hay una garantía incluida pasa a ser guarantee2
   
     const customData = {
-      guaranteeId: 'TEST DESDE FUNCION ',
-      productId: productId
+      "guaranteeId": "TEST DESDE FUNCION",
+      "productId": `${productId}`
     }
     
     console.log('URL Y DATA:',urlCustomData, customData, id); 
+
+    console.log('FUNCION ACTUALIZADA!!!!!!!!!');
 
     const responseCustomData = await fetch(urlCustomData, {
       method: "PUT",

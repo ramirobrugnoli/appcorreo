@@ -40,15 +40,15 @@ const ConfirmGuarantee = () => {
   const [itemsInCart, setItemsInCart] = useState(0);
   const [isOneClickBuy, setIsOneClickbuy] = useState(false)
   const [guaranteeAvailable12, setGuaranteeAvailable12] = useState(275);
-  const [guaranteeAvailable24, setGuaranteeAvailable24] = useState(278);
+  const [guaranteeAvailable24, setGuaranteeAvailable24] = useState(279);
 
   const { url: checkoutURL } = Utils.useCheckoutURL()
   const { navigate } = useRuntime()
   const { orderForm } = useOrderForm()
 
-  const guaranteeNumbers12 = [276, 277]
+  const guaranteeNumbers12 = [277]
 
-  const guaranteeNumbers24 = [279, 280]
+  const guaranteeNumbers24 = [280]
 
   useEffect(() => {
     const urlObj = new URL(window.location.href);
@@ -154,9 +154,9 @@ const ConfirmGuarantee = () => {
 
       const currentGuaranteePrice = guaranteePrice;
 
-      await agregarAlCarrito(guaranteeSelected === 12 ? guaranteeAvailable12 : guaranteeAvailable24, currentGuaranteePrice, orderFormId, 1, productId);
+      await agregarAlCarrito(guaranteeSelected === 12 ? guaranteeAvailable12 : guaranteeAvailable24, currentGuaranteePrice, orderFormId, 1);
 
-      await addOrderData(guaranteeSelected === 12 ? guaranteeAvailable12 : guaranteeAvailable24, orderFormId, productId, 'guarantee1');
+      await addOrderData(guaranteeSelected === 12 ? guaranteeAvailable12 : guaranteeAvailable24, orderFormId, productId, 'guarantee1'); 
 
       navigate({ to: checkoutURL });
       setShowComponent(false);
