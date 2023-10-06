@@ -4,6 +4,7 @@ import { useCssHandles } from 'vtex.css-handles'
 import { Utils } from 'vtex.checkout-resources'
 import { useRuntime } from 'vtex.render-runtime'
 import { agregarAlCarrito } from '../services/vtexApi'
+import { addOrderData } from '../services/orderData'
 import { useOrderForm } from 'vtex.order-manager/OrderForm'
 import styles from './styles/ConfirmGuarantee.css'
 
@@ -155,6 +156,8 @@ const ConfirmGuarantee = () => {
 
       await agregarAlCarrito(guaranteeSelected === 12 ? guaranteeAvailable12 : guaranteeAvailable24, currentGuaranteePrice, orderFormId, 1, productId);
 
+      await addOrderData(guaranteeSelected === 12 ? guaranteeAvailable12 : guaranteeAvailable24, orderFormId, productId, 'guarantee1');
+
       navigate({ to: checkoutURL });
       setShowComponent(false);
       setTimeout(() => {
@@ -193,7 +196,7 @@ const ConfirmGuarantee = () => {
     return (
       <div className={handles.modalGuaranteeOverlay}>
         <div className={handles.modalGuarantee}>
-          <h2>Añadir una garantía 9</h2>
+          <h2>Añadir una garantía 10</h2>
           <div className={handles.modalGuaranteeContainer}>
             <div className={handles.guaranteeOptionsContainer}>
               <div className={guaranteeSelected === 12 ? handles.guaranteeOptionSelected : handles.guaranteeOption} onClick={() => handleClickGuarantee(12)}>
