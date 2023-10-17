@@ -47,9 +47,9 @@ export async function processOrder(ctx: Context, next: () => Promise<any>) {
             } else {
               console.log('No se encontraron datos personalizados o campos en los datos recibidos.');
             }
-            /*             console.log('Items vendidos:', orderitems);
-                        console.log('Order profile info:', orderOwner);
-                        console.log('Obtener detalles pedido nuevo:', orderDetails);   */
+            console.log('Items vendidos:', orderitems);
+            console.log('Order profile info:', orderOwner);
+            console.log('Obtener detalles pedido nuevo:', orderDetails);
             console.log('Custom Data:', JSON.stringify(customData, null, 2));
 
             orderInfo[orderNumber] = orderDetails.items;
