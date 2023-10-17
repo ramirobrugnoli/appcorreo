@@ -27,6 +27,9 @@ export async function processOrder(ctx: Context, next: () => Promise<any>) {
       try {
         let orderInfo: { [key: number]: any } = {};
         let orderNumber = 1;
+        let productWithGuarantee = null;
+        let guaranteeItem = null;
+        let orderOwner = null;
 
         while (true) {
           try {
@@ -35,20 +38,36 @@ export async function processOrder(ctx: Context, next: () => Promise<any>) {
               `${orderId.split('-')[0]}-0${orderNumber}`
             );
             console.log('ORDERS ID TESTING', `${orderId.split('-')[0]}-0${orderNumber}`);
-                       let orderitems = orderDetails.items;
-                      let orderOwner = orderDetails.clientProfileData;
-                      let customData = orderDetails.customData;
-                      if (customData && customData.customApps && customData.customApps.length > 0) {
-                        const fields = customData.customApps[0].fields;
-                        console.log('Fields:', fields);
-                      } else {
-                        console.log('No se encontraron datos personalizados o campos en los datos recibidos.');
-                      }
-                      console.log('Items vendidos:', orderitems);
-                      console.log('Order profile info:', orderOwner);
-/*                       console.log('Obtener detalles pedido nuevo:', orderDetails);  */
-                      console.log('Custom Data:', customData);
+            let orderitems = orderDetails.items;
+            orderOwner = orderDetails.clientProfileData;
+            let customData = orderDetails.customData;
+            if (customData && customData.customApps && customData.customApps.length > 0) {
+              const fields = JSON.stringify(customData.customApps[0].fields, null, 2);;
+              console.log('Custom data fields:', fields);
+            } else {
+              console.log('No se encontraron datos personalizados o campos en los datos recibidos.');
+            }
+            /*             console.log('Items vendidos:', orderitems);
+                        console.log('Order profile info:', orderOwner);
+                        console.log('Obtener detalles pedido nuevo:', orderDetails);   */
+            console.log('Custom Data:', JSON.stringify(customData, null, 2));
+
             orderInfo[orderNumber] = orderDetails.items;
+
+            for (const item of orderitems) {
+              const productId = item.productId;
+              const id = item.id;
+              const guaranteeId = customData.customApps[0].fields.guaranteeId;
+              const productCustomId = customData.customApps[0].fields.productId;
+
+              console.log('productId:', productId, "guarantee ID:", guaranteeId, "prod custom id:", productCustomId);
+
+              if (productId === productCustomId || id === productCustomId) {
+                productWithGuarantee = item
+              } else if (productId === guaranteeId || id === guaranteeId) {
+                guaranteeItem = item;
+              }
+            }
             orderNumber++;
           } catch (detallesError) {
             if (detallesError.statusCode === 404) {
@@ -60,6 +79,8 @@ export async function processOrder(ctx: Context, next: () => Promise<any>) {
           }
         }
         console.log('order info completo:', orderInfo);
+        console.log('guarantee fuera:', guaranteeItem);
+        console.log('product w guarantee fuera:', productWithGuarantee)
       } catch (detallesError) {
         console.error('Error obteniendo detalles del pedido:'/* , detallesError */);
       }
