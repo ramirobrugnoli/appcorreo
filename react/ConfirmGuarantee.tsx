@@ -4,6 +4,7 @@ import { useCssHandles } from 'vtex.css-handles'
 import { Utils } from 'vtex.checkout-resources'
 import { useRuntime } from 'vtex.render-runtime'
 import { agregarAlCarrito } from '../services/vtexApi'
+import { getToken } from '../services/getToken'
 import { addOrderData } from '../services/orderData'
 import { useOrderForm } from 'vtex.order-manager/OrderForm'
 import styles from './styles/ConfirmGuarantee.css'
@@ -41,6 +42,8 @@ const ConfirmGuarantee = () => {
   const [isOneClickBuy, setIsOneClickbuy] = useState(false)
   const [guaranteeAvailable12, setGuaranteeAvailable12] = useState(275);
   const [guaranteeAvailable24, setGuaranteeAvailable24] = useState(279);
+  const [guaranteeClicked, setGuaranteeClicked] = useState(false);
+  const [token, setToken] = useState ('')
 
   const { url: checkoutURL } = Utils.useCheckoutURL()
   const { navigate } = useRuntime()
@@ -68,12 +71,6 @@ const ConfirmGuarantee = () => {
     setOrderFormId(orderForm.id);
   }, []);
   
-
-  useEffect(() => {
-    console.log('is one click buy extraido:', isOneClickBuy);
-  }, [isOneClickBuy])
-  
-
   useEffect(() => {
     if (price !== 0) {
       setGuaranteePrice(price * 0.2);
@@ -82,10 +79,6 @@ const ConfirmGuarantee = () => {
 
   useEffect(() => {
     setOrderFormId(orderForm.id);
-
-    if (orderForm) {
-      console.log(orderForm);
-    }
 
     if (orderForm && productId) {
       orderForm.items.map((item: any) => {
@@ -96,22 +89,18 @@ const ConfirmGuarantee = () => {
   }, [orderForm, productId]);
 
   useEffect(() => {
-    console.log('Entrando a useEffect');
 
     if (orderForm) {
       setItemsInCart(orderForm.items.length);
-      console.log('Cantidad items carrito:', itemsInCart);
 
       orderForm.items.forEach((item: any) => {
-        console.log('NOMBRE: ', item.skuName, ' //  ID: ', item.id);
-        
+ 
         if (guaranteeSelected === 12 && item.id == guaranteeAvailable12) {
           const updatedAvailable12 = guaranteeNumbers12.find((number: any) => number !== guaranteeAvailable12);
           if (updatedAvailable12 !== undefined) {
             setGuaranteeAvailable12(updatedAvailable12);
           }
         } else if (guaranteeSelected === 24 && item.id == guaranteeAvailable24) {
-          console.log('Pasó el segundo if');
           const updatedAvailable24 = guaranteeNumbers24.find((number: any) => number !== guaranteeAvailable24);
           if (updatedAvailable24 !== undefined) {
             setGuaranteeAvailable24(updatedAvailable24);
@@ -147,11 +136,24 @@ const ConfirmGuarantee = () => {
     }
   }, [orderForm, guaranteeSelected, guaranteeAvailable12, guaranteeAvailable24]);
 
-
+  useEffect(() => {
+    async function fetchToken() {
+        try {
+            const tokenData = await getToken();
+            setToken(tokenData);
+            console.log('TOKEN TEST', tokenData, token);
+            console.log(itemsInCart, isOneClickBuy)
+        } catch (error) {
+            console.error('Error fetching token:', error);
+        }
+    }
+    fetchToken();
+}, []);
+  
 
   const handleGuarantee = async () => {
     if (hasSelectedGuarantee) {
-
+      setGuaranteeClicked(true);
       const currentGuaranteePrice = guaranteePrice;
 
       await agregarAlCarrito(guaranteeSelected === 12 ? guaranteeAvailable12 : guaranteeAvailable24, currentGuaranteePrice, orderFormId, 1);
@@ -162,11 +164,9 @@ const ConfirmGuarantee = () => {
       setShowComponent(false);
       setTimeout(() => {
         window.location.reload();
-      }, 2000);
+      }, 2000); 
     }
   };
-
-
 
 
   const handleWithoutGuarantee = () => {
@@ -190,7 +190,6 @@ const ConfirmGuarantee = () => {
     setHasSelectedGuarantee(true);
   };
 
-  console.log('guarantee Price:', guaranteePrice, "price:", price);
 
   if (guaranteePrice && showComponent) {
     return (
@@ -224,7 +223,7 @@ const ConfirmGuarantee = () => {
           <div className={handles.modalFooter}>
 
             <button className={handles.addToCartWithoutGuarantee} onClick={handleWithoutGuarantee}> Continuar sin Garantía </button>
-            <button className={handles.addToCartWithGuarantee} onClick={handleGuarantee}> Añadir Garantía </button>
+            <button className={styles.addToCartWithGuarantee}  onClick={handleGuarantee}> {!guaranteeClicked ? "Añadir Garantía" : <div className={styles.loadingSpinnerButton}></div> } </button>
           </div>
         </div>
       </div>

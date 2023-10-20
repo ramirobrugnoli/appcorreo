@@ -11,11 +11,33 @@
     height: 40px;
     animation: spin 1s linear infinite;
   }
+
+  .loadingSpinnerButton {
+    border: 3px solid #ffffff;
+    border-top: 3px solid #5f5711;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    animation: spin 1s linear infinite;
+  }
   
   .container {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+  }
+
+  .addToCartWithGuarantee {
+    background-color: #f8cc09;
+    border-radius: 10px;
+    height: 46px;
+    width: 204px;
+    border-color: #f8cc09;
+    text-transform: none;
+    transition: all 0.2s;
+    color: black;
+    font-weight: 600;
+    text-align: -webkit-center;
   }
   
