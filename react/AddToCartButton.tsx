@@ -42,6 +42,7 @@ interface Props {
   isLoading?: boolean
   hasGuarantee: boolean
   hasSelectedGuarantee: boolean
+  categoryId: String
 }
 
 // We apply a fake loading to accidental consecutive clicks on the button
@@ -127,7 +128,8 @@ function AddToCartButton(props: Props) {
     onClickEventPropagation = 'disabled',
     isLoading,
     hasGuarantee,
-    hasSelectedGuarantee
+    hasSelectedGuarantee,
+    categoryId
   } = props
 
   const intl = useIntl()
@@ -168,7 +170,12 @@ function AddToCartButton(props: Props) {
     }
   }, [isFakeLoading, isOneClickBuy])
 
-
+  useEffect(() => {
+    if(categoryId){
+      console.log('categoryId q llega a add to cart:', categoryId);
+    }
+  }, [categoryId])
+  
   const resolveToastMessage = (success: boolean) => {
     if (!success) return translateMessage(messages.error)
 
@@ -239,7 +246,7 @@ function AddToCartButton(props: Props) {
         
         //AGREGAR LÓGICA EN DONDE CHEQUEA SI EL PRODUCTO OFRECE O NO GARANTÍA!!!
         console.log('one click buy en true:', isOneClickBuy2);
-        navigate({ to: `/agregar-proteccion?productId=${productLink.productId}&isOneClickBuy=${isOneClickBuy2}` })
+        navigate({ to: `/agregar-proteccion?productId=${productLink.productId}&isOneClickBuy=${isOneClickBuy2}&categoryId=${categoryId}` })
       } else {
         window.location.assign(
           `${rootPath}${customOneClickBuyLink ?? checkoutURL}`
@@ -277,7 +284,7 @@ function AddToCartButton(props: Props) {
       if (hasGuarantee && hasSelectedGuarantee){
         console.log('one click buy en false:', isOneClickBuy2);
         navigate({
-         to: `/agregar-proteccion?productId=${productLink.productId}&isOneClickBuy=${isOneClickBuy2}`,
+         to: `/agregar-proteccion?productId=${productLink.productId}&isOneClickBuy=${isOneClickBuy2}&categoryId=${categoryId}`,
        }) 
      } 
     }

@@ -5,6 +5,8 @@ import { Utils } from 'vtex.checkout-resources'
 import { useRuntime } from 'vtex.render-runtime'
 import { agregarAlCarrito } from '../services/vtexApi'
 import { getToken } from '../services/getToken'
+import { getWarranty } from '../services/getWarranty'
+
 import { addOrderData } from '../services/orderData'
 import { useOrderForm } from 'vtex.order-manager/OrderForm'
 import styles from './styles/ConfirmGuarantee.css'
@@ -44,6 +46,9 @@ const ConfirmGuarantee = () => {
   const [guaranteeAvailable24, setGuaranteeAvailable24] = useState(279);
   const [guaranteeClicked, setGuaranteeClicked] = useState(false);
   const [token, setToken] = useState ('')
+  const [warrantyData, setWarrantyData] = useState('');
+  const [categoryId, setCategoryId] = useState('');
+
 
   const { url: checkoutURL } = Utils.useCheckoutURL()
   const { navigate } = useRuntime()
@@ -58,6 +63,7 @@ const ConfirmGuarantee = () => {
     const searchParams = new URLSearchParams(urlObj.search);
     const id = searchParams.get("productId");
     const isOneClickBuyString = searchParams.get("isOneClickBuy");
+    const categoryIdUrl = searchParams.get("categoryId");
   
     if (id) {
       setProductId(id);
@@ -68,9 +74,22 @@ const ConfirmGuarantee = () => {
       setIsOneClickbuy(isOneClickBuyValue);
     }
   
+    if (categoryIdUrl) {
+      setCategoryId(categoryIdUrl);
+      console.log('category Id en confirm:', categoryIdUrl, categoryId);
+    }
+
     setOrderFormId(orderForm.id);
   }, []);
   
+
+  useEffect(() => {
+    if (categoryId){
+      console.log('category id lcdtm',categoryId)
+    }
+  }, [categoryId])
+  
+
   useEffect(() => {
     if (price !== 0) {
       setGuaranteePrice(price * 0.2);
@@ -140,8 +159,7 @@ const ConfirmGuarantee = () => {
     async function fetchToken() {
         try {
             const tokenData = await getToken();
-            setToken(tokenData);
-            console.log('TOKEN TEST', tokenData, token);
+            await setToken(tokenData.token);
             console.log(itemsInCart, isOneClickBuy)
         } catch (error) {
             console.error('Error fetching token:', error);
@@ -150,6 +168,30 @@ const ConfirmGuarantee = () => {
     fetchToken();
 }, []);
   
+
+useEffect(() => {
+  if (token) {
+    console.log('se actualizo token:', token);
+    async function fetchWarranty() {
+      try {
+          console.log('entro a fetch provincias');
+          const warrantyData = await getWarranty(token, categoryId);
+          await setWarrantyData(warrantyData.data[0]);
+          console.log(warrantyData);
+      } catch (error) {
+          console.error('Error fetching provincias:', error);
+      }
+  }
+  fetchWarranty();
+  }
+}, [token])
+
+useEffect(() => {
+  if (warrantyData) {
+    console.log(warrantyData);
+  }
+}, [warrantyData])
+
 
   const handleGuarantee = async () => {
     if (hasSelectedGuarantee) {

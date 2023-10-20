@@ -149,16 +149,19 @@ const Wrapper = withToast(function Wrapper(props: Props) {
   }
 
   const [hasGuarantee, setHasGuarantee] = useState(true);
-
-/*   //mas adelante pasar api key y token a un .env o averiguar forma de ocultarlo en vtex
-  const apiKey = 'vtexappkey-correostaging-UZRTJY';
-  const apiToken = 'FTHNTKOGDEPOQWQKACRPYRLOJKNPUHFLOWTOELGYEENUESMYJWDNSKJQHOEMYGVKLIKLMPCATLJITZNYRZJTURNKJVEORGUMEORVZPNWGWYISQHWJAESJQZUHFTMLZRL';
+  const [categoryId, setCategoryId] = useState('133')
 
 
-  // el OrderFormId tenemos q hallarlo para cada compra y asignarlo mediante useEffect, ya sea verificando las props de addToCart o mediante API get de vtex.
-  let orderFormId = '05a6cf4d9dde41249215e3643fe0d75f'; */
-
-  // este use effect se usa para ver si el producto tiene o no garantía, tendriamos q ver q método vamos a usar para definir cuales tienen y cuales no y reescribir la funcion
+  //DEFINIR LAS CATEGORIAS CON CORREO, VTEX
+  useEffect(() => {
+    if(product){
+      if (product.categories[0].includes('Tecnología')){
+        setCategoryId('130');
+      }
+    }
+    console.log('category id:', categoryId);
+  }, [product])
+  
   useEffect(() => {
     if (product && product.description === 'ge') {
       setHasGuarantee(true);
@@ -194,6 +197,7 @@ const Wrapper = withToast(function Wrapper(props: Props) {
         addToCartFeedback={addToCartFeedback}
         hasGuarantee={hasGuarantee}
         hasSelectedGuarantee={true}
+        categoryId={categoryId}
       />
     </div>
 
