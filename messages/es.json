@@ -9,5 +9,9 @@
   "admin/editor.add-to-cart.text.title": "Texto del botón",
   "admin/editor.add-to-cart.text.description": "Texto del botón, p. ej.: \"Agregar al carrito\"",
   "admin/editor.add-to-cart.text-unavailable.title": "Texto del botón (no disponible)",
-  "admin/editor.add-to-cart.text-unavailable.description": "Texto del botón cuando el producto no está disponible."
+  "admin/editor.add-to-cart.text-unavailable.description": "Texto del botón cuando el producto no está disponible.",
+  "admin-example.navigation.label": "Test admin app rama",
+  "admin-example.navigation.search.kws": "mock, test, entrenamiento, io, ramon",
+  "admin-example.navigation.insight": "Blister API KEY",
+  "admin-example.navigation.management": "Administración de garantías"
 }

@@ -56,4 +56,14 @@ export default new Service<Clients, State, ParamsContext>({
   },
 });
 
+export const graphqlService = new Service({
+  graphql: {
+    resolvers: {
+      Query: {
+        helloworld: () => `Service number: ${Math.random()}`,
+      },
+    },
+  },
+});
+
 
