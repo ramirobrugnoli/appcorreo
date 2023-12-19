@@ -1,5 +1,5 @@
 {
-  "vendor": "correostaging",
+  "vendor": "andromedapartnerar",
   "name": "add-to-cart-button-guarantee",
   "version": "0.0.1",
   "title": "Add to Cart Button with Guarantee",
@@ -24,6 +24,20 @@
     "vtex.store-resources": "0.x",
     "vtex.native-types": "0.x",
     "vtex.checkout-graphql": "0.x"
+  },
+  "settingsSchema": {
+    "title": "Blister authentication",
+    "type": "object",
+    "properties": {
+      "user": {
+        "title": "User",
+        "type": "string"
+      },
+      "password": {
+        "title": "Password",
+        "type": "string"
+      }
+    }
   },
   "registries": [
     "smartcheckout"

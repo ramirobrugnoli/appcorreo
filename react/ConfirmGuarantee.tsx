@@ -64,16 +64,16 @@ const ConfirmGuarantee = () => {
     const id = searchParams.get("productId");
     const isOneClickBuyString = searchParams.get("isOneClickBuy");
     const categoryIdUrl = searchParams.get("categoryId");
-  
+
     if (id) {
       setProductId(id);
     }
-  
+
     if (isOneClickBuyString) {
       const isOneClickBuyValue = isOneClickBuyString === 'true'; // Convierte la cadena en un valor booleano
       setIsOneClickbuy(isOneClickBuyValue);
     }
-  
+
     if (categoryIdUrl) {
       setCategoryId(categoryIdUrl);
       console.log('category Id en confirm:', categoryIdUrl, categoryId);
@@ -81,14 +81,14 @@ const ConfirmGuarantee = () => {
 
     setOrderFormId(orderForm.id);
   }, []);
-  
+
 
   useEffect(() => {
     if (categoryId){
       console.log('category id lcdtm',categoryId)
     }
   }, [categoryId])
-  
+
 
   useEffect(() => {
     if (price !== 0) {
@@ -113,7 +113,7 @@ const ConfirmGuarantee = () => {
       setItemsInCart(orderForm.items.length);
 
       orderForm.items.forEach((item: any) => {
- 
+
         if (guaranteeSelected === 12 && item.id == guaranteeAvailable12) {
           const updatedAvailable12 = guaranteeNumbers12.find((number: any) => number !== guaranteeAvailable12);
           if (updatedAvailable12 !== undefined) {
@@ -167,7 +167,7 @@ const ConfirmGuarantee = () => {
     }
     fetchToken();
 }, []);
-  
+
 
 useEffect(() => {
   if (token) {
@@ -188,7 +188,7 @@ useEffect(() => {
 
 useEffect(() => {
   if (warrantyData) {
-    console.log(warrantyData);
+    console.log('INFO SOBRE LA GARANTIA:' , warrantyData);
   }
 }, [warrantyData])
 
@@ -200,13 +200,13 @@ useEffect(() => {
 
       await agregarAlCarrito(guaranteeSelected === 12 ? guaranteeAvailable12 : guaranteeAvailable24, currentGuaranteePrice, orderFormId, 1);
 
-      await addOrderData(guaranteeSelected === 12 ? guaranteeAvailable12 : guaranteeAvailable24, orderFormId, productId, 'guarantee1'); 
+      await addOrderData(guaranteeSelected === 12 ? guaranteeAvailable12 : guaranteeAvailable24, orderFormId, productId, 'guarantee1');
 
       navigate({ to: checkoutURL });
       setShowComponent(false);
       setTimeout(() => {
         window.location.reload();
-      }, 2000); 
+      }, 2000);
     }
   };
 
@@ -237,7 +237,7 @@ useEffect(() => {
     return (
       <div className={handles.modalGuaranteeOverlay}>
         <div className={handles.modalGuarantee}>
-          <h2>Añadir una garantía 10</h2>
+          <h2>Añadir una garantía:</h2>
           <div className={handles.modalGuaranteeContainer}>
             <div className={handles.guaranteeOptionsContainer}>
               <div className={guaranteeSelected === 12 ? handles.guaranteeOptionSelected : handles.guaranteeOption} onClick={() => handleClickGuarantee(12)}>

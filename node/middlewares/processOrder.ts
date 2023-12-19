@@ -1,5 +1,6 @@
 import { json } from 'co-body';
 import fetch from 'node-fetch';
+import { ServiceContext } from '@vtex/api'
 
 export async function processOrder(ctx: Context, next: () => Promise<any>) {
   try {
@@ -7,10 +8,13 @@ export async function processOrder(ctx: Context, next: () => Promise<any>) {
     const orderId = body.OrderId;
 
     let tokenBlister: any;
+    let blisterInfo: any;
 
     try {
+      blisterInfo = await getBlisterInfo(ctx);
       tokenBlister = await getToken();
       console.log('Token Blister:', tokenBlister);
+      console.log('Blister Info:', blisterInfo);
     } catch (tokenError) {
       console.error('Error obteniendo token:', tokenError);
     }
@@ -120,6 +124,17 @@ async function getToken() {
   return json;
 }
 
+async function getBlisterInfo(ctx: ServiceContext) {
+  const {
+    clients: { apps },
+  } = ctx
+
+  const appSettings = await apps.getAppSettings(process.env.VTEX_APP_ID|| 'undef');
+
+  console.log('blister info:' , appSettings)
+
+  return (appSettings);
+}
 
 /* async function registSell(tokenBlister, orderInfo) {
   const url = "https://api-marketplace.staging.andromedalatam.com/api/v1/sales/extendedwarranty";
