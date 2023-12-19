@@ -2,7 +2,7 @@
   "vendor": "andromedapartnerar",
   "name": "add-to-cart-button-guarantee",
   "version": "0.0.1",
-  "title": "Add to Cart Button with Guarantee",
+  "title": "Blister Garantía",
   "description": "A button component to add items into the shopping cart, if they had guarantee, redirects to another page.",
   "builders": {
     "node": "6.x",
